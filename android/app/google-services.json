@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "479537609270",
+    "project_id": "el-marsa-df7c0",
+    "storage_bucket": "el-marsa-df7c0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:479537609270:android:15f4fc6f0ad49aa293b697",
+        "android_client_info": {
+          "package_name": "com.example.el_marsa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "479537609270-5jhtbjsl4mok4ttl4mol1ipl1ms14int.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.el_marsa",
+            "certificate_hash": "f2d07348c5275e4965fb8ed04164a4e781069a7b"
+          }
+        },
+        {
+          "client_id": "479537609270-qd4h63gdf3jvp4jpagucudn50fhmf5ug.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfXTYOFvDhg3dF09QANMz6yOSnPkweFzQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "479537609270-bfrakkh757soustphtvtei2u0r1vb9be.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "479537609270-1l8b9tshv0314pde5eprq4vv01em34im.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterApplicationTest"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
