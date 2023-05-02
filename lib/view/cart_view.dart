@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:el_marsa/core/view_model/payment_view_model.dart';
 
 class CartView extends StatelessWidget {
   @override
@@ -147,23 +148,29 @@ class CartView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Container(
-                      height: 50,
-                      width: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(0),
-                      ),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Get.to(HomeScreene());
-                        },
-                        child: Text("Checkout"),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryColor,
+                    GetBuilder<PaymentViewModel>(
+                      init: PaymentViewModel(),
+                      initState: (_) {},
+                      builder: (controller) {
+                        return Container(
+                          height: 50,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              controller.makePayment();
+                            },
+                            child: Text("Checkout"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: primaryColor,
 
-                          // padding: padding,
-                        ),
-                      ),
+                              // padding: padding,
+                            ),
+                          ),
+                        );
+                      },
                     )
                   ],
                 );
