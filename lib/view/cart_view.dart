@@ -1,5 +1,6 @@
 import 'package:el_marsa/constance.dart';
 import 'package:el_marsa/core/view_model/cart_view_model.dart';
+import 'package:el_marsa/test/paymenttesttt.dart';
 import 'package:el_marsa/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -153,7 +154,9 @@ class CartView extends StatelessWidget {
                         borderRadius: BorderRadius.circular(0),
                       ),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(HomeScreene());
+                        },
                         child: Text("Checkout"),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryColor,
