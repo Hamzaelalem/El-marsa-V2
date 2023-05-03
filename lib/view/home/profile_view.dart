@@ -1,18 +1,21 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'package:el_marsa/core/view_model/payment_view_model.dart';
 import 'package:el_marsa/core/view_model/profile_view_model.dart';
 import 'package:el_marsa/view/auth/login_screen.dart';
 import 'package:el_marsa/widgets/profile_row.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../payments/payments_view.dart';
+
 class ProfileView extends StatelessWidget {
   // const ProfileView({Key? key}) : super(key: key);
-
+  final controller = Get.put(PaymentViewModel());
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ProfileViewModel>(
-      init: ProfileViewModel(),
+      init: Get.put(ProfileViewModel()),
       builder: (controller) => controller.loading.value
           ? Center(child: CircularProgressIndicator())
           : Scaffold(
@@ -95,7 +98,6 @@ class ProfileView extends StatelessWidget {
                                 text: "sign out",
                                 onpressed: () {
                                   controller.signOut();
-                                  Get.offAll(loginScreen());
                                 },
                               ),
                               SizedBox(height: 16),
@@ -106,10 +108,18 @@ class ProfileView extends StatelessWidget {
                                 onpressed: () {},
                               ),
                               SizedBox(height: 16),
-                              ProfileRow(
-                                icon: Icons.girl,
-                                text: "Khadija",
-                                onpressed: () {},
+                              GetBuilder<PaymentViewModel>(
+                                init: PaymentViewModel(),
+                                initState: (_) {},
+                                builder: (Controller) {
+                                  return ProfileRow(
+                                    icon: Icons.list,
+                                    text: "payments",
+                                    onpressed: () async {
+                                      await Controller.getPaymentHistory();
+                                    },
+                                  );
+                                },
                               ),
                               SizedBox(height: 16),
                               // GetBuilder<PaymentsController>(
@@ -127,9 +137,7 @@ class ProfileView extends StatelessWidget {
                               ProfileRow(
                                 icon: Icons.edit,
                                 text: "Edit Profile",
-                                onpressed: () {
-                                 
-                                },
+                                onpressed: () {},
                               ),
                             ],
                           ),

@@ -10,6 +10,7 @@ class CartViewModel extends GetxController {
   ValueNotifier<bool> _loading = ValueNotifier(false);
 
   List<CartProductModel> _cartProductModel = [];
+
   List<CartProductModel> get cartProductModel => _cartProductModel;
   var dbHelper = CartDbHelper.db;
   CartViewModel() {
@@ -33,6 +34,7 @@ class CartViewModel extends GetxController {
     for (int i = 0; i < _cartProductModel.length; i++) {
       _total +=
           double.parse(_cartProductModel[i].price!) * _cartProductModel[i].qty!;
+
       // print("product qty");
       // print(_cartProductModel[i].qty!);
     }
@@ -69,6 +71,7 @@ class CartViewModel extends GetxController {
       _cartProductModel[index].qty = (_cartProductModel[index].qty ?? 0) - 1;
       _total -= double.parse(_cartProductModel[index].price!);
       await dbHelper.updadteProduct(_cartProductModel[index]);
+      
       update();
     }
   }

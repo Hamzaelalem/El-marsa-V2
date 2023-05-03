@@ -26,4 +26,6 @@ class CartProductModel {
     price = map['price'];
     productId = map['productId'];
   }
+
+  
 }

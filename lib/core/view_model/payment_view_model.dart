@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:el_marsa/core/view_model/profile_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
@@ -8,16 +10,37 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:uuid/uuid.dart';
 
+import '../../helper/local_storage_data.dart';
+import '../../model/payment_model.dart';
+import '../../view/payments/payments_view.dart';
+import 'cart_view_model.dart';
 
-
-
-class PaymentViewModel extends GetxController{
-  
+class PaymentViewModel extends GetxController {
+  static CartViewModel instance = Get.find();
+  static ProfileViewModel instanc = Get.find();
+  late CartViewModel cartViewModel;
+  late ProfileViewModel profileViewModel;
+  //late LocalStorgeData localStorgeData;
   Map<String, dynamic>? paymentIntent;
-   Future<void> makePayment() async {
+
+  ValueNotifier<bool> get loading => _loading;
+  ValueNotifier<bool> _loading = ValueNotifier(false);
+  PaymentViewModel() {
+    cartViewModel = instance;
+    profileViewModel = instanc;
+    
+    // localStorgeData=localStorgeData;
+  }
+
+  String collection = 'orders';
+
+  List<PaymentsModel> payments = [];
+  Future<void> makePayment() async {
     try {
-      paymentIntent = await createPaymentIntent('100', 'USD');
+      paymentIntent = await createPaymentIntent(
+          '${cartViewModel.total.toStringAsFixed(0)}', 'USD');
 
       //STEP 2: Initialize Payment Sheet
       await Stripe.instance
@@ -38,7 +61,10 @@ class PaymentViewModel extends GetxController{
 
   displayPaymentSheet() async {
     try {
-      await Stripe.instance.presentPaymentSheet().then((value) {
+      await Stripe.instance.presentPaymentSheet().then((value) async {
+        await _addToCollection();
+        //cartViewModel.cartProductModel = [];
+
         showDialog(
             context: Get.context!,
             builder: (_) => AlertDialog(
@@ -109,5 +135,54 @@ class PaymentViewModel extends GetxController{
   calculateAmount(String amount) {
     final calculatedAmout = (int.parse(amount)) * 100;
     return calculatedAmout.toString();
+  }
+
+  _addToCollection() {
+    String id = Uuid().v1();
+    FirebaseFirestore.instance.collection(collection).doc(id).set({
+      "id": id,
+      "clientId": profileViewModel.userModel?.userId,
+      "clientName": profileViewModel.userModel?.userName,
+       "cart":
+
+          cartViewModel.cartProductModel.map((item) => item.toJson()).toList(),
+      "amount": cartViewModel.total.toStringAsFixed(1),
+      "status": "untreated",
+      "createdAt": DateTime.now().microsecondsSinceEpoch,
+    });
+  }
+
+  // check for problem
+  getPaymentHistory() async {
+    //showLoading();
+    _loading.value = false;
+
+    payments.clear();
+    await FirebaseFirestore.instance
+        .collection(collection)
+        .where(
+          //localStorgeData.usermodel.userId
+          "clientId",
+          isEqualTo: profileViewModel.userModel?.userId,
+        )
+        .get()
+        .then((snapshot) async {
+      print('getPayment');
+      print("length ${payments.length}");
+
+      snapshot.docs.forEach((doc) {
+        PaymentsModel payment = PaymentsModel.fromMap(doc.data());
+        print('add payment');
+        payments.add(payment);
+        print(
+          profileViewModel.userModel?.userId,
+        );
+      });
+      print("length ${payments.length}");
+      _loading.value = false;
+      //logger.i("length ${payments.length}");
+      //dismissLoadingWidget();
+      Get.to(() => PaymentsScreen());
+    });
   }
 }

@@ -1,3 +1,4 @@
+import 'package:el_marsa/core/view_model/payment_view_model.dart';
 import 'package:el_marsa/helper/local_storage_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../model/user_model.dart';
+import '../../view/auth/login_screen.dart';
 
 class ProfileViewModel extends GetxController {
   ValueNotifier<bool> get loading => _loading;
@@ -12,13 +14,18 @@ class ProfileViewModel extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    //paymentViewModel = Get.find();
+    
 
     getCurrentUser();
-    print("userModel p");
-    print(userModel);
+    // print("userModel p");
+    // print(userModel);
   }
 
+  //late PaymentViewModel paymentViewModel;
   final LocalStorgeData localStorgeData = Get.find();
+
+  //final PaymentViewModel paymentViewModel = Get.find();
 
   UserModel? get userModel => _userModel;
   UserModel? _userModel;
@@ -26,8 +33,9 @@ class ProfileViewModel extends GetxController {
   Future<void> signOut() async {
     GoogleSignIn().signOut();
     FirebaseAuth.instance.signOut();
-    //
+   // paymentViewModel.payments = [];
     localStorgeData.deletUser();
+    Get.offAll(loginScreen());
   }
 
   // void getCurrentUser() async {

@@ -50,6 +50,8 @@ dependencies:
   flutter_dotenv: ^5.0.2
   flutter_stripe: ^9.2.0
   http: ^0.13.6
+  uuid: ^3.0.7
+  timeago: ^3.3.0
   
   
   

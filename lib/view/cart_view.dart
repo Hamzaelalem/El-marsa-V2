@@ -1,6 +1,6 @@
 import 'package:el_marsa/constance.dart';
 import 'package:el_marsa/core/view_model/cart_view_model.dart';
-import 'package:el_marsa/test/paymenttesttt.dart';
+
 import 'package:el_marsa/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,6 +9,7 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:el_marsa/core/view_model/payment_view_model.dart';
 
 class CartView extends StatelessWidget {
+  final controller = Get.put(PaymentViewModel());
   @override
   Widget build(BuildContext context) {
     return SafeArea(
