@@ -140,6 +140,10 @@ class DetailsView extends StatelessWidget {
                                 productId: Model?.productId,
                                 qty: 1,
                               ));
+                              Get.snackbar(
+                                "succes",
+                                "add to cart succesfully !",
+                              );
                             },
                             child: Text("add"),
                             style: ElevatedButton.styleFrom(

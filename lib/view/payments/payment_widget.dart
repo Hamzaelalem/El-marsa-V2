@@ -6,6 +6,9 @@ import 'package:get/get.dart';
 
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../../model/cart_product_model.dart';
+import '../../model/payment_model.dart';
+import '../../model/payment_model.dart';
 import '../../widgets/custom_text.dart';
 
 class PaymentWidget extends StatelessWidget {
@@ -63,22 +66,16 @@ class PaymentWidget extends StatelessWidget {
             ],
           ),
           Divider(),
-          Column(
-              children: paymentsModel.cart!
-                  .map((item) => ListTile(
-                        title: CustomeText(text: item.name),
-                      ))
-                  .toList()),
           // Column(
-          //     children: paymentsModel.cart!
-          //         .map((item) => ListTile(
+          //     children: paymentsModel.cart! 
+          //         . PaymentsModel.fromMap((item ) => ListTile(
           //               title: CustomeText(
           //                 text: item.name,
           //               ),
           //               trailing: CustomeText(
           //                 text: "\$ ${item.price}",
           //               ),
-          //             ))
+          //             )) 
           //         .toList()),
           Divider(),
           ListTile(
@@ -105,3 +102,44 @@ class PaymentWidget extends StatelessWidget {
     return timeago.format(date, locale: 'fr');
   }
 }
+
+
+
+
+
+          // Column(
+          //   children: paymentsModel.cart!
+          //       .map((item) =>
+          //           PaymentsModel.fromMap(item as Map<String, dynamic>)
+          //       .map((item) => ListTile(
+          //             title: CustomeText(
+          //               text: item.name!,
+          //             ),
+          //             trailing: CustomeText(
+          //               text: "\$ ${item.price}",
+          //             ),
+          //           ))
+          //       .toList(),
+          // ),
+
+//          Column(
+//   children: paymentsModel.cart!
+//     .map((item) => CartProductModel.fromJson(item as Map<String, dynamic>))
+//     .map((item) => ListTile(
+//       title: CustomeText(text: item.name),
+//     ))
+//     .toList() ,
+// ),
+
+          // Column(
+          //     children: paymentsModel.cart!
+          //         .map((item) => ListTile(
+          //               title: CustomeText(
+          //                 text: item.name,
+          //               ),
+          //               trailing: CustomeText(
+          //                 text: "\$ ${item.price}",
+          //               ),
+          //             ))
+          //         .toList()),
+          

@@ -15,7 +15,7 @@ class CartProductModel {
     };
   }
 
-  CartProductModel.fromJson(Map<dynamic, dynamic> map) {
+CartProductModel.fromJson(Map<String, dynamic> map) {
     if (map == null) {
       return;
     }
