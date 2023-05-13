@@ -4,6 +4,7 @@ import 'package:el_marsa/helper/binding.dart';
 import 'package:el_marsa/test/paymenttesttt.dart';
 import 'package:el_marsa/view/auth/login_screen.dart';
 import 'package:el_marsa/view/control_view.dart';
+import 'package:el_marsa/view/home/ar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -19,7 +20,7 @@ import 'firebase_options.dart';
 late SharedPreferences prefs1;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-     Stripe.publishableKey =
+  Stripe.publishableKey =
       'pk_test_51N1zeiFLfuzTyfv8IxCjedvq9zzRvPVSmjHomozOJhGucypLfbzACn0gW6yqCRrYNO2MWRMVlIFEJEmFi9gBIGJ000uR8QKpgn';
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

@@ -190,6 +190,7 @@ class HomeScreen extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           Get.to(() => DetailsView(
+                                index1: index,
                                 Model: controler.productsList[index],
                               ));
 
@@ -197,7 +198,7 @@ class HomeScreen extends StatelessWidget {
                         },
                         child: Container(
                             height: 140,
-                            // width: Dimensions.screenWidth * .4,
+                            width: Dimensions.screenWidth * .4,
                             child: Stack(
                               alignment: Alignment.topCenter,
                               children: [
@@ -234,7 +235,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                                 Positioned(
                                   // top: 8,
-                                  left: 1,
+                                  left: 0,
                                   child: Container(
                                       padding: EdgeInsets.all(2),
                                       decoration: BoxDecoration(

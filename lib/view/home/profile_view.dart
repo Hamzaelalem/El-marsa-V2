@@ -7,6 +7,8 @@ import 'package:el_marsa/widgets/profile_row.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../fournisseur/add_product_form.dart';
+import '../fournisseur/testvalidation.dart';
 import '../payments/payments_view.dart';
 
 class ProfileView extends StatelessWidget {
@@ -127,8 +129,10 @@ class ProfileView extends StatelessWidget {
                               //     builder: (controller) =>
                               ProfileRow(
                                 icon: Icons.edit,
-                                text: "pay",
+                                text: "add product",
                                 onpressed: () {
+                                 // Get.to(AddProductScreen());
+
                                   //  controller.makePayment();
                                 },
                                 //)

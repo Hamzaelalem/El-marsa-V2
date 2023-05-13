@@ -31,6 +31,8 @@ class CustomeText extends StatelessWidget {
             fontWeight: fontWeight,
             height: height),
         overflow: overflow,
+        //maxLines: 1,
+        textAlign: TextAlign.justify,
         // maxLines: 1,
       ),
     );

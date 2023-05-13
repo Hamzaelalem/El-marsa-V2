@@ -31,17 +31,20 @@ class CartView extends StatelessWidget {
                         height: 140,
                         child: Row(
                           children: [
-                            Container(
-                                width: 100,
-                                child: controler.cartProductModel[index]
-                                                .image ==
-                                            null ||
-                                        controler.cartProductModel[index]
-                                                .image ==
-                                            ""
-                                    ? Image.asset('assets/images/iphone14.png')
-                                    : Image.network(controler
-                                        .cartProductModel[index].image!)),
+                            Flexible(
+                              child: Container(
+                                  width: 100,
+                                  child:
+                                      controler.cartProductModel[index].image ==
+                                                  null ||
+                                              controler.cartProductModel[index]
+                                                      .image ==
+                                                  ""
+                                          ? Image.asset(
+                                              'assets/images/iphone14.png')
+                                          : Image.network(controler
+                                              .cartProductModel[index].image!)),
+                            ),
                             Padding(
                               padding: const EdgeInsets.only(left: 20),
                               child: Column(
@@ -51,6 +54,8 @@ class CartView extends StatelessWidget {
                                     text:
                                         "${controler.cartProductModel[index].name}",
                                     fontSize: 22,
+                                    //max
+                                    //overflow :AlwaysScrollableScrollPhysics;
                                   ),
                                   SizedBox(
                                     height: 10,
