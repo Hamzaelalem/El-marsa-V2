@@ -73,25 +73,32 @@ class loginScreen extends GetWidget<AuthViewModel> {
                     controller.email = value!;
                   },
                   validator: (value) {
-                    if (value == null) {
-                      print("ERROR");
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      } else if (!value.contains('@')) {
+                        return 'Please enter a valid email address';
+                      }
+                      return null;
                     }
-                    ;
-                  },
+                  
                 ),
                 SizedBox(
                   height: 25,
                 ),
                 CustomFormField(
                     text: "Password",
-                    hint: "********",
+                    hint: " ********",
                     onSave: (value) {
                       controller.password = value!;
                     },
-                    validator: (value) {
-                      if (value == null) {
-                        print("ERROR");
+                                      validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
+                      } else if (value.length < 6) {
+                        return 'Password must be at least 6 characters';
                       }
+                      return null;
+                    
                     }),
                 SizedBox(
                   height: 15,
@@ -137,11 +144,11 @@ class loginScreen extends GetWidget<AuthViewModel> {
                 SizedBox(
                   height: 25,
                 ),
-                SocialButton(
-                  text: "Sign In With Facebook",
-                  icon: "assets/images/Facebook_icon.png",
-                  onPressed: () {},
-                ),
+                // SocialButton(
+                //   text: "Sign In With Facebook",
+                //   icon: "assets/images/Facebook_icon.png",
+                //   onPressed: () {},
+                // ),
                 SizedBox(
                   height: 16,
                 ),

@@ -9,4 +9,5 @@ import 'package:flutter/material.dart';
 
 const CASHED_USER_DATA = 'CASHED_USER_DATA';
 
-const primaryColor = Color.fromRGBO(0, 197, 105, 1);
+const primaryColor = Color.fromRGBO(0, 66, 90, 1);
+const green = Colors.green;

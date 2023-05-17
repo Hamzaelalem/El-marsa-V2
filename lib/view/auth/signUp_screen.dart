@@ -109,7 +109,7 @@ class SignUpScreen extends GetWidget<AuthViewModel> {
                       }
                       ;
                     },
-                    text: "SIGN IN",
+                    text: "SIGN UP",
                   ),
                 ],
               ),

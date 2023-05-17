@@ -7,6 +7,9 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:el_marsa/core/view_model/payment_view_model.dart';
+import 'package:http/http.dart';
+
+import 'fournisseur/AdressConfirmation.dart';
 
 class CartView extends StatelessWidget {
   final controller = Get.put(PaymentViewModel());
@@ -154,29 +157,24 @@ class CartView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    GetBuilder<PaymentViewModel>(
-                      init: PaymentViewModel(),
-                      initState: (_) {},
-                      builder: (controller) {
-                        return Container(
-                          height: 50,
-                          width: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(0),
-                          ),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              controller.makePayment();
-                            },
-                            child: Text("Checkout"),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: primaryColor,
+                    Container(
+                      height: 50,
+                      width: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Get.to(AddressConfirmationForm());
+                          //controller.makePayment();
+                        },
+                        child: Text("order"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primaryColor,
 
-                              // padding: padding,
-                            ),
-                          ),
-                        );
-                      },
+                          // padding: padding,
+                        ),
+                      ),
                     )
                   ],
                 );

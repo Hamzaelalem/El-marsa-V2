@@ -50,22 +50,165 @@ class AuthViewModel extends GetxController {
     update();
   }
 
-  void googleSignInMethod() async {
-    final GoogleSignInAccount? googleUser = await _googleSignIn!.signIn();
-    print(googleUser);
+  // void googleSignInMethod() async {
+  //   final GoogleSignInAccount? googleUser = await _googleSignIn!.signIn();
+  //   print(googleUser);
 
-    GoogleSignInAuthentication? googleSignInAuthentication =
-        await googleUser?.authentication;
+  //   GoogleSignInAuthentication? googleSignInAuthentication =
+  //       await googleUser?.authentication;
 
-    final AuthCredential credential = GoogleAuthProvider.credential(
-      idToken: googleSignInAuthentication?.idToken,
-      accessToken: googleSignInAuthentication?.accessToken,
-    );
+  //   final AuthCredential credential = GoogleAuthProvider.credential(
+  //     idToken: googleSignInAuthentication?.idToken,
+  //     accessToken: googleSignInAuthentication?.accessToken,
+  //   );
 
-    // UserCredential? userCredential =
-    await _auth?.signInWithCredential(credential);
-    //print(UserCredential);
+  //   // UserCredential? userCredential =
+  //   await _auth?.signInWithCredential(credential);
+  //   //print(UserCredential);
+  // }
+/////////
+void googleSignInMethod() async {
+  try {
+  final GoogleSignInAccount? googleUser = await _googleSignIn!.signIn();
+  print(googleUser);
+
+  GoogleSignInAuthentication? googleSignInAuthentication =
+      await googleUser?.authentication;
+
+  final AuthCredential credential = GoogleAuthProvider.credential(
+    idToken: googleSignInAuthentication?.idToken,
+    accessToken: googleSignInAuthentication?.accessToken,
+  );
+
+  UserCredential? userCredential =
+      await _auth?.signInWithCredential(credential);
+
+  // if (userCredential != null) {
+  //   final UserModel? existingUser =
+  //       await FireStoreUser()
+    //      .getCurentUser(userCredential.user!.uid);
+    //      // FireStoreUser().getCurentUser(value.user!.uid).then((value) {
+    // if (existingUser != null) {
+    //   setUser(existingUser);
+    // } else {
+      UserModel newUser = UserModel(
+        userId: userCredential?.user!.uid,
+        userEmail: userCredential?.user!.email,
+        userName: userCredential?.user!.displayName,
+        userPic: userCredential?.user!.photoURL,
+      );
+
+      await FireStoreUser().addUserFireStore(newUser);
+      setUser(newUser);
+       Get.offAll(ControllView());
+
+    
+} catch (e) {
+      print(e.toString());
+
+      Get.snackbar(
+        "error login acount ",
+        e.toString().toString(),
+        colorText: Colors.black,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
+
+
+//////
+
+
+  void CreateUserWithEmailMethod() async {
+    try {
+      await _auth
+          ?.createUserWithEmailAndPassword(email: email, password: password)
+          .then((user) async {
+        saveUser(user);
+      });
+
+      Get.offAll(ControllView());
+    } catch (e) {
+      print(e.toString());
+
+      Get.snackbar(
+        "error login acount ",
+        e.toString().toString(),
+        colorText: Colors.black,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+//////////////////////////
+
+
+
+
+/////////////////////////
+  void EmailSignInMethod() async {
+    try {
+      await _auth
+          ?.signInWithEmailAndPassword(email: email, password: password)
+          .then((value) async {
+        await FireStoreUser().getCurentUser(value.user!.uid).then((value) {
+          setUser(UserModel.fromJason(value.data() as Map<dynamic, dynamic>));
+          print(value.data());
+        });
+      });
+      print("ok user data");
+
+      Get.offAll(ControllView());
+    } catch (e) {
+      print("catvh");
+      print(e.toString());
+      Get.snackbar(
+        "error login acount ",
+        e.toString().toString(),
+        colorText: Colors.black,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  //Sign Up method
+
+
+  void saveUser(UserCredential user) async {
+    UserModel userModel = UserModel(
+      userId: user.user?.uid,
+      userEmail: user.user?.email,
+      userName: name,
+      userPic: '',
+    );
+    await FireStoreUser()
+        .addUserFireStore(userModel)
+        .then((value) => Get.offAll(ControllView()));
+    setUser(userModel);
+  }
+
+  // void setUser(UserModel userModel) async {
+  //   final data = await localStorgeData.setUser(userModel);
+  //   final userData = data?.data();
+  //   if (userData != null) {
+  //     userModel = UserModel.fromJason(userData as Map<String, dynamic>);
+  //   }
+  //   _user.value = userModel as User?;
+  // }
+
+  void setUser(UserModel userModel) async {
+    print('USER EMail');
+    print("from set user${userModel.userEmail}");
+    await localStorgeData.setUser(userModel);
+  }
+
+  Future<void> signOut() async {
+    GoogleSignIn().signOut();
+    FirebaseAuth.instance.signOut();
+    localStorgeData.deletUser();
+  }
+}
+
 
   // void facebookSignInMethod() async {
   //   await _facebookLogin?.logIn(customPermissions: ['email']);
@@ -128,85 +271,3 @@ class AuthViewModel extends GetxController {
   //     );
   //   }
   // }
-
-  void EmailSignInMethod() async {
-    try {
-      await _auth
-          ?.signInWithEmailAndPassword(email: email, password: password)
-          .then((value) async {
-        await FireStoreUser().getCurentUser(value.user!.uid).then((value) {
-          setUser(UserModel.fromJason(value.data() as Map<dynamic, dynamic>));
-          print(value.data());
-        });
-      });
-      print("ok user data");
-
-      Get.offAll(ControllView());
-    } catch (e) {
-      print("catvh");
-      print(e.toString());
-      Get.snackbar(
-        "error login acount ",
-        e.toString().toString(),
-        colorText: Colors.black,
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    }
-  }
-
-  //Sign Up method
-  void CreateUserWithEmailMethod() async {
-    try {
-      await _auth
-          ?.createUserWithEmailAndPassword(email: email, password: password)
-          .then((user) async {
-        saveUser(user);
-      });
-
-      Get.offAll(ControllView());
-    } catch (e) {
-      print(e.toString());
-
-      Get.snackbar(
-        "error login acount ",
-        e.toString().toString(),
-        colorText: Colors.black,
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    }
-  }
-
-  void saveUser(UserCredential user) async {
-    UserModel userModel = UserModel(
-      userId: user.user?.uid,
-      userEmail: user.user?.email,
-      userName: name,
-      userPic: '',
-    );
-    await FireStoreUser()
-        .addUserFireStore(userModel)
-        .then((value) => Get.offAll(ControllView()));
-    setUser(userModel);
-  }
-
-  // void setUser(UserModel userModel) async {
-  //   final data = await localStorgeData.setUser(userModel);
-  //   final userData = data?.data();
-  //   if (userData != null) {
-  //     userModel = UserModel.fromJason(userData as Map<String, dynamic>);
-  //   }
-  //   _user.value = userModel as User?;
-  // }
-
-  void setUser(UserModel userModel) async {
-    print('USER EMail');
-    print("from set user${userModel.userEmail}");
-    await localStorgeData.setUser(userModel);
-  }
-
-  Future<void> signOut() async {
-    GoogleSignIn().signOut();
-    FirebaseAuth.instance.signOut();
-    localStorgeData.deletUser();
-  }
-}

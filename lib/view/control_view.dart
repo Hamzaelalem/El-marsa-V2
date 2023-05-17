@@ -28,7 +28,8 @@ class ControllView extends GetWidget<AuthViewModel> {
               builder: (controller) => SafeArea(
                 child: Scaffold(
                   appBar: AppBar(
-                    toolbarHeight: 67.0,
+                    elevation: 0.0,
+                    toolbarHeight: 80.0,
                     backgroundColor: Colors.white,
                     title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,7 +88,7 @@ class ControllView extends GetWidget<AuthViewModel> {
           BottomNavigationBarItem(
               activeIcon: CustomeText(
                 text: "Explore",
-                color: primaryColor,
+                color: green,
                 alignment: Alignment.center,
               ),
               label: "",
@@ -95,7 +96,7 @@ class ControllView extends GetWidget<AuthViewModel> {
           BottomNavigationBarItem(
               activeIcon: CustomeText(
                 text: "Category",
-                color: primaryColor,
+                color: green,
                 alignment: Alignment.center,
               ),
               label: "",
@@ -104,7 +105,7 @@ class ControllView extends GetWidget<AuthViewModel> {
           BottomNavigationBarItem(
             activeIcon: CustomeText(
               text: "Acount",
-              color: primaryColor,
+              color: green,
               alignment: Alignment.center,
             ),
             label: "",

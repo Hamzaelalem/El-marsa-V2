@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../model/user_model.dart';
 import '../../view/auth/login_screen.dart';
@@ -66,4 +67,11 @@ class ProfileViewModel extends GetxController {
     // print(_userModel!.userId);
     _loading.value = false;
   }
+
+   final Uri _url = Uri.parse('https://dashboard.kommunicate.io/conversations');
+  Future<void> AdminChatPanel() async {
+  if (!await launchUrl(_url)) {
+    throw Exception('Could not launch $_url');
+  }
+}
 }

@@ -7,18 +7,17 @@ import 'package:get/get.dart';
 
 import 'package:timeago/timeago.dart' as timeago;
 
-import '../../model/cart_product_model.dart';
-import '../../model/payment_model.dart';
-import '../../model/payment_model.dart';
-import '../../widgets/custom_text.dart';
+import '../../../widgets/custom_text.dart';
 
-class PaymentWidget extends StatelessWidget {
+class AdminPaymentWidgetUntreated extends StatelessWidget {
   //static PaymentViewModel instance = Get.find();
   final PaymentsModel paymentsModel;
+ 
 
-  const PaymentWidget({
+  const AdminPaymentWidgetUntreated({
     Key? key,
     required this.paymentsModel,
+    
   }) : super(key: key);
 
   @override
@@ -81,7 +80,7 @@ class PaymentWidget extends StatelessWidget {
                                   SingleChildScrollView(
                                     child: Column(
                                       children: [
-                                         Text('Items Details :',style: TextStyle(color: Colors.green ,)),
+                                        Text('Items Details :',style: TextStyle(color: Colors.green ,)),
                                         Divider(
                                                 height: 4,
                                                 thickness: 2,
@@ -124,7 +123,22 @@ class PaymentWidget extends StatelessWidget {
                   },
                   child: Text("  Item Details")),
               Spacer(),
-            
+              GetBuilder<PaymentViewModel>(
+                init: PaymentViewModel(),
+                // initState: (_) {},
+                builder: (controller) {
+                  return ElevatedButton(
+                    onPressed: () async {
+                      await controller.AdminConfirmedOrder(paymentsModel.id!);
+                    },
+                    child: Text('Confirm '),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Color.fromARGB(255, 2, 74, 90)),
+                    ),
+                  );
+                },
+              ),
               SizedBox(
                 width: 10,
               )
@@ -138,9 +152,15 @@ class PaymentWidget extends StatelessWidget {
             ),
             trailing: SizedBox(
               width: 80,
-              child: CustomeText(
-                text: paymentsModel.status,
-                color: Colors.green,
+              child: GetBuilder<PaymentViewModel>(
+                init: PaymentViewModel(),
+                initState: (_) {},
+                builder: (cnt) {
+                  return CustomeText(
+                    text: paymentsModel.status,
+                    color: Colors.green,
+                  );
+                },
               ),
             ),
           )
@@ -155,102 +175,3 @@ class PaymentWidget extends StatelessWidget {
     return timeago.format(date, locale: 'fr');
   }
 }
-
-// Column(
-//   children: paymentsModel.cart!
-//       .map((item) =>
-//           PaymentsModel.fromMap(item as Map<String, dynamic>)
-//       .map((item) => ListTile(
-//             title: CustomeText(
-//               text: item.name!,
-//             ),
-//             trailing: CustomeText(
-//               text: "\$ ${item.price}",
-//             ),
-//           ))
-//       .toList(),
-// ),
-
-//          Column(
-//   children: paymentsModel.cart!
-//     .map((item) => CartProductModel.fromJson(item as Map<String, dynamic>))
-//     .map((item) => ListTile(
-//       title: CustomeText(text: item.name),
-//     ))
-//     .toList() ,
-// ),
-
-// Column(
-//     children: paymentsModel.cart!
-//         .map((item) => ListTile(
-//               title: CustomeText(
-//                 text: item.name,
-//               ),
-//               trailing: CustomeText(
-//                 text: "\$ ${item.price}",
-//               ),
-//             ))
-//         .toList()),
-
-
-
-
- // Expanded(
-          //   child: ListView.separated(itemBuilder: (context, index) {
-          //     return
-          // Text(paymentsModel.cart![0].price.toString()),
-          //     ListTile(
-          //                 title: CustomeText(
-          //                   text: 'qwerty',
-          //                 ),
-          //                 trailing: CustomeText(
-          //                   text: "\$ 12",
-          //                 ),
-          //               ),
-          // //               ;
-          //   }, separatorBuilder: (context, index) {
-          //     return SizedBox(height: 3,);
-          //   }, itemCount: paymentsModel.cart!.length),
-          // ),
-          // Column(
-          //     children: paymentsModel.cart!
-          //         . PaymentsModel.fromMap((item ) =>
-          //         .toList()),
-
-
-           // Expanded(
-                              //   child: ListView.builder(
-                              //       itemBuilder: (context, index) {
-                              //         Column(children: [
-                              //           Text(
-                              //               ' ${paymentsModel.cart![index].name}'),
-                              //           Text(
-                              //               ' ${paymentsModel.cart![index].name}'),
-                              //         ]);
-                              //       },
-                              //       itemCount: paymentsModel.cart!.length),
-                              // )
-
-
-
-                              //          TextButton(
-//   onPressed: () {
-//     showDialog(
-//             context: Get.context!,
-//             builder: (_) => AlertDialog(
-//                   content: Column(
-//                     mainAxisSize: MainAxisSize.min,
-//                     children: [
-//                       Icon(
-//                         Icons.check_circle,
-//                         color: Colors.green,
-//                         size: 100.0,
-//                       ),
-//                       SizedBox(height: 10.0),
-//                       Text(' ${paymentsModel.cart![0].name}'),
-//                     ],
-//                   ),
-//                 ));
-//   },
-//   child: Text("Item Details"),
-// ),

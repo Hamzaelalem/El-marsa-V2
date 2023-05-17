@@ -1,5 +1,6 @@
 //import 'dart:io';
-
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
 
@@ -34,7 +35,8 @@ class _Testvali extends State<Testvali> {
   final TextEditingController descriptionController = TextEditingController();
 
   final _productController = Get.put(ProductController());
-  XFile? image;
+  late String imageFile;
+  late String imageName;
   //List<XFile> imageFile = [];
 
   @override
@@ -89,11 +91,16 @@ class _Testvali extends State<Testvali> {
                     if (_formKey.currentState!.validate()) {
                       // validate the form
                       final product = ProductModel(
-                          name: nameController.text,
-                          description: descriptionController.text,
-                          //imageFile: image
-                          );
-                      _productController.addProductToFirestore(product);
+                        name: nameController.text,
+                        description: descriptionController.text,
+                        //imageFile: image
+                      );
+                      _productController.addProductToFirestore(
+                          product, imageFile);
+                      nameController.clear();
+                      descriptionController.clear();
+                      Get.snackbar("Success", "Product added Succeesfully");
+
                       //Get.back();
                     }
                   },
@@ -112,11 +119,9 @@ class _Testvali extends State<Testvali> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        //imageFile = [];
-        image = XFile(pickedFile.path);
-        // imageFile.add(XFile(pickedFile.path));
-        //Navigator.of(context).pop();
-        print("susses: image picker");
+        imageFile = pickedFile.path;
+        imageName = pickedFile.name;
+        //print("pathhhhhhhhhhhhhh"+pickedFile.path);
       });
     }
   }
@@ -124,15 +129,27 @@ class _Testvali extends State<Testvali> {
 
 class ProductController extends GetxController {
   final _products = <ProductModel>[].obs;
+  late Testvali testvali;
 
   List<ProductModel> get products => _products;
 
-  Future<void> addProductToFirestore(ProductModel product) async {
+  final storage = FirebaseStorage.instance;
+
+  Future<void> addProductToFirestore(
+      ProductModel product, String imageFile) async {
     try {
+      final imageFileName = DateTime.now().millisecondsSinceEpoch.toString();
+      final Reference ref = storage.ref().child('product_images/${imageFileName}');
+      final UploadTask uploadTask = ref.putFile(File(imageFile));
+
+      final TaskSnapshot taskSnapshot = await uploadTask;
+      final String imageUrl = await taskSnapshot.ref.getDownloadURL();
+   
+  
       await FirebaseFirestore.instance.collection('products').add({
         'name': product.name,
         'description': product.description,
-        //'imageFile': product.image,
+        'image': imageUrl,
       });
       print('Product added to Firestore successfully');
     } catch (e) {
@@ -140,6 +157,23 @@ class ProductController extends GetxController {
     }
   }
 }
+
+
+//   Future<void> addProductToFirestore(ProductModel product) async {
+//     try {
+//       await FirebaseFirestore.instance.collection('products').add({
+//         'name': product.name,
+//         'description': product.description,
+//         //'imageFile': product.image,
+//       });
+//       print('Product added to Firestore successfully');
+//     } catch (e) {
+//       print('Error adding product to Firestore: $e');
+//     }
+//   }
+// }
+
+
 
 //
 

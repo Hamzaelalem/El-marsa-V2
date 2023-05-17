@@ -7,17 +7,24 @@ import 'package:el_marsa/widgets/profile_row.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../fournisseur/AdressConfirmation.dart';
 import '../fournisseur/add_product_form.dart';
+import '../fournisseur/dropdowntest.dart';
+import '../fournisseur/edit_profile.dart';
+import '../fournisseur/orderstabs.dart';
 import '../fournisseur/testvalidation.dart';
+import '../payments/admin_payment.dart/admin_payment_screen.dart';
 import '../payments/payments_view.dart';
 
 class ProfileView extends StatelessWidget {
   // const ProfileView({Key? key}) : super(key: key);
   final controller = Get.put(PaymentViewModel());
+  //final profileController = Get.put(ProfileViewModel());
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ProfileViewModel>(
-      init: Get.put(ProfileViewModel()),
+      init: ProfileViewModel(),
       builder: (controller) => controller.loading.value
           ? Center(child: CircularProgressIndicator())
           : Scaffold(
@@ -51,22 +58,20 @@ class ProfileView extends StatelessWidget {
                               ? CircleAvatar(
                                   radius: 50,
                                   backgroundImage: AssetImage(
-                                    'assets/images/iphone14.png',
+                                    'assets/images/user.jpg',
                                   ),
                                 )
                               : controller.userModel?.userPic == "default"
                                   ? CircleAvatar(
                                       radius: 50,
                                       backgroundImage: AssetImage(
-                                        'assets/images/iphone14.png',
+                                        'assets/images/user.jpg',
                                       ),
                                     )
                                   : CircleAvatar(
                                       radius: 50,
-                                      backgroundImage: AssetImage(
-                                        'assets/images/iphone14.png',
-                                      ),
-                                    ),
+                                      backgroundImage: NetworkImage(
+                                          controller.userModel!.userPic!)),
                           SizedBox(height: 16),
                           Text(
                             controller.userModel!.userName!,
@@ -103,11 +108,19 @@ class ProfileView extends StatelessWidget {
                                 },
                               ),
                               SizedBox(height: 16),
-                              ProfileRow(
-                                icon: Icons.girl,
-                                text:
-                                    "user id ${controller.userModel?.userName}",
-                                onpressed: () {},
+                              GetBuilder<PaymentViewModel>(
+                                init: PaymentViewModel(),
+                                initState: (_) {},
+                                builder: (Controller) {
+                                  return ProfileRow(
+                                    icon: Icons.payments_outlined,
+                                    text: "Admin Payment History ",
+                                    onpressed: () async {
+                                      await Controller.getPaymentHistoryAdmin();
+                                      Get.to(() => AdminPaymentsScreen());
+                                    },
+                                  );
+                                },
                               ),
                               SizedBox(height: 16),
                               GetBuilder<PaymentViewModel>(
@@ -118,30 +131,87 @@ class ProfileView extends StatelessWidget {
                                     icon: Icons.list,
                                     text: "payments",
                                     onpressed: () async {
+                                      //
+                                      // await Get.to(() => MyTabPage());
                                       await Controller.getPaymentHistory();
                                     },
                                   );
                                 },
                               ),
                               SizedBox(height: 16),
-                              // GetBuilder<PaymentsController>(
-                              //     init: PaymentsController(),
-                              //     builder: (controller) =>
+                              GetBuilder<PaymentViewModel>(
+                                  init: PaymentViewModel(),
+                                  builder: (controller) => ProfileRow(
+                                        icon: Icons.edit,
+                                        text: "add product",
+                                        onpressed: () {
+                                          // Get.to(Testvali());
+                                          Get.to(AddProductScreen());
+                                          //Get.to(DropdownExample());
+                                          //  controller.makePayment();
+                                        },
+                                      )),
+                              SizedBox(height: 16),
                               ProfileRow(
-                                icon: Icons.edit,
-                                text: "add product",
-                                onpressed: () {
-                                 // Get.to(AddProductScreen());
-
-                                  //  controller.makePayment();
+                                icon: Icons.list,
+                                text: "Chat",
+                                onpressed: () async {
+                                  //
+                                  // await Get.to(() => MyTabPage());
+                                  await controller.AdminChatPanel();
                                 },
-                                //)
                               ),
+                              SizedBox(height: 16),
+                              GetBuilder<PaymentViewModel>(
+                                init: PaymentViewModel(),
+                                initState: (_) {},
+                                builder: (controller) {
+                                  return ProfileRow(
+                                    icon: Icons.edit,
+                                    text: "admin Payment Managment",
+                                    onpressed: () async {
+                                      await controller.GetListsAdmin();
+                                      // await controller
+                                    },
+                                  );
+                                },
+                              ),
+                              SizedBox(height: 16),
+                              GetBuilder<PaymentViewModel>(
+                                  init: PaymentViewModel(),
+                                  builder: (controller) => ProfileRow(
+                                        icon: Icons.edit,
+                                        text: "Confirm Adress",
+                                        onpressed: () {
+                                          // Get.to(Testvali());
+                                          Get.to(AddressConfirmationForm());
+                                          //Get.to(DropdownExample());
+                                          //  controller.makePayment();
+                                        },
+                                      )),
                               SizedBox(height: 16),
                               ProfileRow(
                                 icon: Icons.edit,
                                 text: "Edit Profile",
-                                onpressed: () {},
+                                onpressed: () {
+                                  // Get.to(Testvali());
+                                  String? userName =
+                                      controller.userModel!.userName;
+                                  String? userEmail =
+                                      controller.userModel!.userEmail;
+                                  String userImage =
+                                      controller.userModel!.userPic!;
+                                  String userId = controller.userModel!.userId!;
+                                  print("user image" + userImage);
+                                  Get.to(EditProfile(
+                                    userImage: userImage,
+                                    userEmail: userEmail!,
+                                    userName: userName!,
+                                    userId:userId
+                                  ));
+                                  //Get.to(DropdownExample());
+                                  //  controller.makePayment();
+                                },
                               ),
                             ],
                           ),
