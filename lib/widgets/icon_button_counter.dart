@@ -35,8 +35,8 @@ class IconButtonCounter extends StatelessWidget {
               ))),
           numOfItem! > 0
               ? Container(
-                  height: 20,
-                  width: 20,
+                  height: 15,
+                  width: 15,
                   decoration:
                       BoxDecoration(shape: BoxShape.circle, color: Colors.red),
                   child: Center(

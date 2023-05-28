@@ -36,7 +36,7 @@ class ControllView extends GetWidget<AuthViewModel> {
                         children: [
                           CustomSearchBar(),
                           SizedBox(
-                            width: Dimensions.screenWidth / 100,
+                            width: Dimensions.screenWidth / 200,
                           ),
                           GetBuilder<CartViewModel>(
                             init: CartViewModel(),
@@ -55,7 +55,7 @@ class ControllView extends GetWidget<AuthViewModel> {
                             press: () async {
                               dynamic conversationObject = {
                                 'appId':
-                                    '28aa7e0b6a4b43dcd55dfd05e741ebefd', // The [APP_ID](https://dashboard.kommunicate.io/settings/install) obtained from kommunicate dashboard.
+                                    '3274fffa79e94ed1c11812a14a0519f80', // The [APP_ID](https://dashboard.kommunicate.io/settings/install) obtained from kommunicate dashboard.
                               };
 
                               KommunicateFlutterPlugin.buildConversation(
@@ -95,7 +95,7 @@ class ControllView extends GetWidget<AuthViewModel> {
               icon: Icon(Icons.home_rounded)),
           BottomNavigationBarItem(
               activeIcon: CustomeText(
-                text: "Category",
+                text: "Cart",
                 color: green,
                 alignment: Alignment.center,
               ),

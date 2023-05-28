@@ -28,6 +28,9 @@ class PaymentViewModel extends GetxController {
   //late LocalStorgeData localStorgeData;
   Map<String, dynamic>? paymentIntent;
 
+
+
+
   ValueNotifier<bool> get loading => _loading;
   ValueNotifier<bool> _loading = ValueNotifier(false);
   PaymentViewModel() {

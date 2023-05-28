@@ -30,7 +30,7 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  //late String imageFile;
+  late String imageFile;
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   XFile? image;
   final TextEditingController nameController = TextEditingController();
@@ -38,7 +38,7 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController IdController = TextEditingController();
 
   final _productController = Get.put(ProductController());
-  final profileController = Get.put(ProfileViewModel());
+ // final profileController = Get.put(ProfileViewModel());
 
   late String userImage, userId;
 
@@ -125,7 +125,7 @@ class _EditProfileState extends State<EditProfile> {
                           alignment: Alignment.topLeft,
                           child: ElevatedButton(
                               onPressed: () async {
-                                // await pickImage();
+                                await pickImage();
                               },
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all<
@@ -149,8 +149,7 @@ class _EditProfileState extends State<EditProfile> {
                             );
 
                             _productController.addProductToFirestore(
-                              user,
-                            );
+                                user, imageFile);
                             //add imageFile in the constractor
                             Get.snackbar(
                                 "Success", "Product added Succeesfully");
@@ -173,43 +172,46 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-//   Future<void> pickImage() async {
-//     final pickedFile =
-//         await ImagePicker().pickImage(source: ImageSource.gallery);
-//     if (pickedFile != null) {
-//       setState(() {
-//         imageFile = pickedFile.path;
+  Future<void> pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = pickedFile.path;
 
-//         //print("pathhhhhhhhhhhhhh"+pickedFile.path);
-//       });
-//     }
-//   }
+        print("pathhhhhhhhhhhhhh" + pickedFile.path);
+      });
+    }
+  }
 }
 
 //import 'dart:html';
 
 class ProductController extends GetxController {
   final _products = <ProductModel>[].obs;
+  final controller = Get.put(ProfileViewModel());
 
   List<ProductModel> get products => _products;
   final storage = FirebaseStorage.instance;
 
-  Future<void> addProductToFirestore(UserModel user) async {
+  Future<void> addProductToFirestore(UserModel user, String imageFile) async {
     // add imageFile in the constractor
     try {
-      // final imageFileName = DateTime.now().millisecondsSinceEpoch.toString();
-      // final Reference ref =
-      //     storage.ref().child('users_images/${imageFileName}');
-      // final UploadTask uploadTask = ref.putFile(File(imageFile));
+      final imageFileName = DateTime.now().millisecondsSinceEpoch.toString();
+      final Reference ref =
+          storage.ref().child('users_images/${imageFileName}');
+      final UploadTask uploadTask = ref.putFile(File(imageFile));
 
-      // final TaskSnapshot taskSnapshot = await uploadTask;
-      // final String imageUrl = await taskSnapshot.ref.getDownloadURL();
+      final TaskSnapshot taskSnapshot = await uploadTask;
+      final String imageUrl = await taskSnapshot.ref.getDownloadURL();
 
       await FirebaseFirestore.instance
           .collection('users')
           .doc(user.userId)
           .update({'userName': user.userName, 'userEmail': user.userEmail});
-
+          ProfileViewModel profileViewModel = Get.find<ProfileViewModel>();
+          profileViewModel.refrshUserData();
+    
       print('Product added to Firestore successfully');
     } catch (e) {
       print('Error adding product to Firestore: $e');

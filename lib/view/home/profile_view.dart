@@ -18,6 +18,7 @@ import '../payments/payments_view.dart';
 
 class ProfileView extends StatelessWidget {
   // const ProfileView({Key? key}) : super(key: key);
+
   final controller = Get.put(PaymentViewModel());
   //final profileController = Get.put(ProfileViewModel());
 
@@ -36,10 +37,10 @@ class ProfileView extends StatelessWidget {
                       color: Color.fromARGB(255, 58, 86, 109),
                       child: Row(
                         children: [
-                          IconButton(
-                            icon: Icon(Icons.arrow_back_ios_sharp),
-                            onPressed: () {},
-                          ),
+                          // IconButton(
+                          //   icon: Icon(Icons.arrow_back_ios_sharp),
+                          //   onPressed: () {},
+                          // ),
                         ],
                       ),
                     ),
@@ -168,7 +169,7 @@ class ProfileView extends StatelessWidget {
                                 builder: (controller) {
                                   return ProfileRow(
                                     icon: Icons.edit,
-                                    text: "admin Payment Managment",
+                                    text: "Payment Managment",
                                     onpressed: () async {
                                       await controller.GetListsAdmin();
                                       // await controller
@@ -194,6 +195,8 @@ class ProfileView extends StatelessWidget {
                                 icon: Icons.edit,
                                 text: "Edit Profile",
                                 onpressed: () {
+                                //  controller.getCurrentUser();
+                                  controller.refrshUserData();
                                   // Get.to(Testvali());
                                   String? userName =
                                       controller.userModel!.userName;
@@ -204,11 +207,10 @@ class ProfileView extends StatelessWidget {
                                   String userId = controller.userModel!.userId!;
                                   print("user image" + userImage);
                                   Get.to(EditProfile(
-                                    userImage: userImage,
-                                    userEmail: userEmail!,
-                                    userName: userName!,
-                                    userId:userId
-                                  ));
+                                      userImage: userImage,
+                                      userEmail: userEmail!,
+                                      userName: userName!,
+                                      userId: userId));
                                   //Get.to(DropdownExample());
                                   //  controller.makePayment();
                                 },
